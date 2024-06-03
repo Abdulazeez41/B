@@ -1,0 +1,47 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: BlockPass
+    network: scroll-sepolia
+    source:
+      address: "0xD05E461F5CE3D721d614aD881FcB73cCA74D61D4"
+      abi: BlockPass
+      startBlock: 4159532
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - BatchMetadataUpdate
+        - MetadataUpdate
+        - OwnershipTransferred
+        - Transfer
+        - blockPassCreated
+        - passBooked
+      abis:
+        - name: BlockPass
+          file: ./abis/BlockPass.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: BatchMetadataUpdate(uint256,uint256)
+          handler: handleBatchMetadataUpdate
+        - event: MetadataUpdate(uint256)
+          handler: handleMetadataUpdate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: blockPassCreated(indexed address,indexed uint256,uint256)
+          handler: handleblockPassCreated
+        - event: passBooked(indexed address,uint256,uint256)
+          handler: handlepassBooked
+      file: ./src/block-pass.ts
